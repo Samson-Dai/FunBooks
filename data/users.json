@@ -1,0 +1,7 @@
+[
+{'name': 'Henry', 'password': '123456', 'status': 'offline','cart':[], 'totalnum': 0},
+{'name': 'Alan', 'password': '123456', 'status': 'offline', 'cart':[], 'totalnum': 0},
+{'name': 'Jimmy', 'password': '111', 'status': 'offline','cart':[], 'totalnum': 0},
+{'name': 'Sarah', 'password': '222', 'status': 'offline','cart':[], 'totalnum': 0},
+{'name': 'Gary', 'password': '333', 'status': 'offline','cart':[], 'totalnum': 0}
+]

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FunBooks</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/mystyles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="/javascripts/myscripts.js"></script>
+</head>
+<body ng-app="mainPageApp" ng-controller="mainController" ng-init="loadMain()">
+    <h1 class="web_title">FunBook</h1>
+    <div id="userInfo" class="clearfix" ng-show="showUserInfo">
+        <p id="signIn" class="signButton float_left clickable underline" ng-hide="signinOrNot" ng-click="loadSignin()"> Sign in </p>
+        <p id="greeting" ng-show="signinOrNot" class="float_left">Hello,{{signin_username}} <span id="signOut" class="signButton clickable underline" ng-click="loadSignout()"> Sign out</span></p>
+        <p id="shoppingCart" class = "float_right clickable" ng-show="signinOrNot" ng-click="loadCart()"><i class="fas fa-shopping-cart"></i>{{totalnum}} in Cart  </p>
+    </div>
+
+    <!--Main Page-->
+    <div id="mainPage" class="outer_container" ng-show="showPage.main"> 
+        <div id="bookCategories" class="category">
+            <p ng-repeat='category in book_categories' class="book_category" ng-click="loadCategory(category,1)">{{category}}</p>
+        </div>
+        <div id="display_area">
+            <div id = "books_area">
+                <div ng-repeat='book in books_to_display' class="book_info" book_id={{book._id}} ng-click="loadDetails(book)">
+                    <img src={{book.coverImage}} class="book_cover_image">
+                    <span class="list_span bold">{{book.title}}</span>
+                    <span class="list_span">{{book.authorList.join(" ,")}}</span>
+                    <span class="list_span italic">${{book.price}}</span>
+                </div>
+            </div>
+            <div class="page_area ">
+                <span class="clickable" ng-click='previousPage()'>< Previous Page  </span>
+                <span class="page_select">page<select ng-model="current_page" ng-change="changePage()" data-ng-options="n for n in [] | range:1:total_pages+1"></select> of {{total_pages}}</span>
+                <span class="clickable" ng-click='nextPage()'>   Next Page ></span>
+            </div>
+        </div>
+    </div>
+
+    <!--Book Detail Page-->
+    <div id="detailPage"  class="outer_container" ng-show="showPage.detail"> 
+        <div id="book_detail_area">
+            <div class="detail_section center">
+                <img src={{detail_book.coverImage}} class="book_cover_image">
+            </div>
+            <div class="detail_section">
+                <span class="list_span bold">Title: {{detail_book.title}}</span>
+                <span class="list_span">Author(s): {{detail_book.authorList.join(" ,")}}</span>
+                <span class="list_span italic">Price: ${{detail_book.price}}</span>
+                <span class="list_span">Publisher: {{detail_book.publisher}}</span>
+                <span class="list_span italic">Publishing Date: {{detail_book.date}}</span>
+                <span class="list_span italic">Book description: {{detail_book.description}}</span>
+            </div>
+            <div class="border_rounded detail_section center">
+                <div class="sparse_line">
+                    Quantuty:
+                    <select ng-model="quantity_to_add" data-ng-options="n for n in [] | range:1:30"></select>
+                </div>
+                <button class="normal_button" ng-click='handleAddItem()'>Add to Cart</button>
+            </div>
+        </div>
+        <div class="page_area center sparse_line">
+            <span class="clickable" ng-click='switchPage("main")'>< go back</span>
+        </div>
+    </div>
+
+    <!--User Signin Page-->
+    <div id="signinPage"  class="outer_container center" ng-show="showPage.signin">
+        <p class="warning" ng-show="login_fail">Login Failure </p> 
+        <div class="sparse_line">
+            Username:
+            <input type="text" placeholder="username" ng-model="signin_username">
+        </div>
+        <div class="sparse_line">
+            Password:
+            <input type="text" placeholder="password" ng-model="signin_password">
+        </div>
+        <button class="normal_button" ng-click='handleSignin()'>Sign in </button>  
+    </div>
+
+    <!--User Signout Page-->
+    <div id="signoutPage"  class="outer_container center" ng-show="showPage.signout">
+        <div class="sparse_line">
+            <p ng-show="show_signout_warning">You still have {{totalnum == 1?  totalnum+" item": totalnum+" items"}} in your Cart </button> 
+        </div>
+        <div class="sparse_line">
+            <button class="normal_button" ng-click='cancelSignout()'>Cancel sign-out</button> 
+            <button class="normal_button" ng-click='confirmSignout()'>Confirm sign-out</button> 
+        </div>
+    </div>
+
+
+    <!--Confirm Add Page-->
+    <div id="conformAddPage"  class="outer_container center" ng-show="showPage.confirm_add">
+        <div id="book_detail_area">
+            <div class="detail_section center">
+                <img src={{detail_book.coverImage}} class="book_cover_image">
+            </div>
+            <div class="confirm_section">
+                <span class="list_span bold"><i class="fas fa-check"></i>Added to Cart.</span>
+                <span class="list_span">Cart subtotal ({{totalnum == 1 ? totalnum+" item": totalnum+" items"}}): ${{total_price}}</span>
+            </div>
+        </div>
+        <div class="page_area center sparse_line">
+            <span class="clickable" ng-click='continueBrowsing()'>continue browsing> </span>
+        </div>
+    </div>
+
+
+    <!--Shopping cart content-->
+    <div id="shoppingCart"  class="outer_container center" ng-show="showPage.cart_content">
+        <h1> Shopping cart</h1>
+        <div id="book_detail_area">
+            <table id="cart_content_table"> 
+                <tr>
+                    <th></th><th></th><th>Price:</th><th>Quantity:</th>
+                </tr>
+                    
+                <tr ng-repeat='item in current_cart_content' book_id={{item._id}}>
+                    <td><img src={{item.coverImage}} class="book_cover_image"></td>
+                    <td>
+                        <span class="list_span bold">{{item.title}}</span>
+                        <span class="list_span">{{item.authorList.join(" ,\n")}}</span>
+                    </td>
+                    <td><span class="list_span italic">${{item.price}}</span></td>
+                    <td id={{'status_'+commodity._id}}>
+                        <select ng-model="item.quantity" ng-change="handleChange(item.quantity,item._id)" data-ng-options="n for n in [] | range:0:100"></select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="page_area center sparse_line">
+            <span class="list_span">Cart subtotal ({{totalnum == 1 ? totalnum+" item": totalnum+" items"}}): ${{total_price}}</span>
+            <button class="normal_button" ng-click='checkout()'>Proceed to check out</button> 
+        </div>
+    </div>
+
+    <!--Checkout Page-->
+    <div id="checkoutPage"  class="outer_container center" ng-show="showPage.checkout">
+        <div id="checkout_area sparse_line">
+            <span class="list_span"><i class="fas fa-check"></i> You have successfully placed order for {{payment_num == 1 ? payment_num+" item": payment_num+" items"}} </span>
+            <span class="list_span"> ${{payment_price}} paid.</span>
+        </div>
+        <div class="page_area center sparse_line">
+            <span class="list_span clickable" ng-click = "continueBrowsing()"> continue browsing> </span>
+        </div>
+    </div>
+
+</body>
+</html>

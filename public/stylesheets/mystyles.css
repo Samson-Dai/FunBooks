@@ -1,0 +1,185 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.clearfix{
+    overflow: auto;
+}
+
+.clearfix::after{
+    content: "";
+    clear:both;
+    display: table;
+}
+
+.web_title{
+    text-align: center;
+    font-weight: 350;
+    font-size: 29px;
+    color: #fff;
+    background-color: #000;
+    font-family: "Lato", sans-serif;
+    padding: 12px 24px;
+    width: 280px;
+    opacity: 0.75;
+    margin: auto;
+}
+
+div.outer_container{
+    border: 1px solid;
+    padding: 5px;
+}
+
+div.book_category{
+    display: inline-block;
+    width: 20%;
+
+}
+
+div#bookCategories{
+    display: inline-block;
+    width: 20%;
+    vertical-align: top;
+    margin: 5px;
+}
+
+div#bookCategories .book_category{
+    margin: 5px 10px 10px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #3386ced6;
+    cursor: pointer;
+}
+
+div#bookCategories .book_category:hover{
+    color: #64b3f7d6;
+}
+
+div#display_area{
+    display: inline-block;
+    margin: 5px;
+    width: 75%;
+}
+
+div.book_info{
+    display: inline-block;
+    width: 200px;
+    vertical-align: top;
+    margin: 5px;
+    cursor: pointer;
+}
+
+img.book_cover_image{
+    width: 175px;
+    height: 250px;
+}
+
+span.list_span{
+    display: block;
+    margin: 10px 0px;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.center{
+    text-align: center;
+}
+
+.border_rounded{
+    border: solid 1px;
+    border-radius: 20px;
+    padding: 20px 0px;
+}
+
+.sparse_line{
+    margin-bottom: 40px;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+.clickable:hover{
+    color: #0265ffd6;
+}
+
+.underline{
+    text-decoration: underline;
+}
+
+
+div.detail_section{
+    width: 30%;
+    display: inline-block;
+    margin: 5px;
+    vertical-align: top;
+}
+
+div.confirm_section{
+    width: 60%;
+    display: inline-block;
+    margin: 5px;
+    vertical-align: top;
+}
+
+button.normal_button{
+    cursor: pointer;
+}
+
+div#book_detail_area{
+    padding: 5px 0px 50px;
+}
+
+p.signButton{
+    display: inline-block;
+    margin: 10px 5px;
+}
+
+div#signinPage{
+    padding: 50px 0px;
+    margin-top: 50px;
+}
+
+.warning{
+    color: red;
+    font-weight: bold;
+}
+
+.float_left{
+    display: inline-block;
+    float: left;
+}
+
+.float_right{
+    display: inline-block;
+    float: right;
+}
+
+table{
+    width: 100%;
+}
+
+td,th{
+    padding: 10px 5px;
+}
+
+span.page_select{
+    margin: 0px 30px;
+}
+
+.page_area{
+    text-align: center;
+    margin: 50px 10px 20px;
+}
+
+i.fas{
+    margin: 0px 5px;
+}
